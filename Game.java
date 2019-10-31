@@ -19,7 +19,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
-        
+           
     /**
      * Create the game and initialise its internal map.
      */
@@ -34,30 +34,75 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, office;
+        Room lot, auditorium, lobby, cafe, office, playground, gym, sllobby, library, garden, dungeon, bathroom, tllobby, classroom, roof;
       
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        lot = new Room("in the parking lot outside the school");
+        auditorium = new Room("in the school auditorium");
+        lobby = new Room("in the main lobby");
+        cafe = new Room("in the cafeteria");
+        office = new Room("in the principal's office");
+        playground = new Room("outside in the fenced in playground");
+        gym = new Room("in the gymnasium");
+        sllobby = new Room("in the second floor lobby");
+        library = new Room("in the library");
+        garden = new Room("in the garden");
+        dungeon = new Room("in the secret dungeon");
+        bathroom = new Room("in the boys bathroom");
+        tllobby = new Room("in the third floor lobby");
+        classroom = new Room("in a classroom on the thirdfloor");
+        roof = new Room("on the roof of the school");
         
         // initialise room exits
-        outside.setExit("east", theater);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
+        lot.setExit("south", lobby);
+        
+        lobby.setExit("north", lot);
+        lobby.setExit("west", gym);
+        lobby.setExit("south", sllobby);
+        lobby.setExit("east", cafe);
+        lobby.setExit("office", office);    //user must use silver key found in bathroom to get into
+        
+        gym.setExit("east", lobby);
 
-        theater.setExit("west", outside);
+        cafe.setExit("west", lobby);
+        cafe.setExit("east", playground);
 
-        pub.setExit("east", outside);
-
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-
-        office.setExit("west", lab);
-
-        currentRoom = outside;  // start game outside
+        playground.setExit("west", cafe);
+        
+        office.setExit("lobby", lobby);
+        office.setExit("tunnel", library);
+        
+        sllobby.setExit("north", lobby);
+        sllobby.setExit("west", auditorium);
+        sllobby.setExit("south", tllobby);
+        sllobby.setExit("east", bathroom);
+        
+        auditorium.setExit("east", sllobby);
+        
+        library.setExit("west", sllobby);
+        library.setExit("east", garden);
+        library.setExit("secret", dungeon);
+        library.setExit("tunnel", office);
+        
+        garden.setExit("west", library);
+        
+        dungeon.setExit("library", library);
+        dungeon.setExit("bathroom", bathroom);
+        
+        bathroom.setExit("secret", dungeon);
+        bathroom.setExit("west", tllobby);
+        
+        tllobby.setExit("north", sllobby);
+        tllobby.setExit("west", classroom);
+        tllobby.setExit("south", roof);
+        tllobby.setExit("east", bathroom);
+        
+        classroom.setExit("east", tllobby);
+        
+        roof.setExit("north", tllobby);
+        roof.setExit("jump", lot);
+        
+        currentRoom = lot;  // start game outside
     }
 
     /**
