@@ -1,5 +1,7 @@
 import java.util.HashMap;
-
+import java.lang.Iterable;
+import java.util.Set;
+import java.util.Iterator;
 /**
  * This class is part of the "World of Zuul" application. 
  * "World of Zuul" is a very simple, text based adventure game.
@@ -55,7 +57,16 @@ public class CommandWords
     {
         return validCommands.containsKey(aString);
     }
-
+    public String getCommandList()
+    {
+        String returnString =  "";
+        for (CommandWord command : CommandWord.values()){
+            returnString = returnString + command + "   ";
+        }
+            return returnString;
+        
+        
+    }
     /**
      * Print all valid commands to System.out.
      */

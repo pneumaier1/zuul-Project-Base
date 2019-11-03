@@ -1,3 +1,5 @@
+import java.lang.NullPointerException;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -18,8 +20,8 @@
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
-           
+    public Room currentRoom;
+    public Room prevRoom;
     /**
      * Create the game and initialise its internal map.
      */
@@ -35,23 +37,56 @@ public class Game
     private void createRooms()
     {
         Room lot, auditorium, lobby, cafe, office, playground, gym, sllobby, library, garden, dungeon, bathroom, tllobby, classroom, roof;
-      
+        
+        Item office_Item, dungeon_Item, gym_Item, lot_Item, no_Item;
+        
+        Item dungeonItems[] = { new Item("red carpet", 2),
+                new Item ("Lamp",200),
+                new Item ("table",1000)};
+        Item officeItems[] = { new Item("Cheeseburger", 2),
+                new Item ("Desk", 2000),
+                new Item ("Chair", 400)};
+        Item gymItems[] = { new Item(" A ladder", 10),
+                new Item ("Basketball", 10)};
+        no_Item = new Item("", 0);
+        
+        int[] roomNumber;
+        roomNumber = new int[15];
+        roomNumber[1] = 1;
+        roomNumber[2] = 2;
+        roomNumber[3] = 3;
+        roomNumber[4] = 4;
+        roomNumber[5] = 5;
+        roomNumber[6] = 6;
+        roomNumber[7] = 7;
+        roomNumber[8] = 8;
+        roomNumber[9] = 9;
+        roomNumber[10] = 10;
+        roomNumber[11] = 11;
+        roomNumber[12] = 12;
+        roomNumber[13] = 13;
+        roomNumber[14] = 14;
+        roomNumber[15] = 15;
         // create the rooms
-        lot = new Room("in the parking lot outside the school");
-        auditorium = new Room("in the school auditorium");
-        lobby = new Room("in the main lobby");
-        cafe = new Room("in the cafeteria");
-        office = new Room("in the principal's office");
-        playground = new Room("outside in the fenced in playground");
-        gym = new Room("in the gymnasium");
-        sllobby = new Room("in the second floor lobby");
-        library = new Room("in the library");
-        garden = new Room("in the garden");
-        dungeon = new Room("in the secret dungeon");
-        bathroom = new Room("in the boys bathroom");
-        tllobby = new Room("in the third floor lobby");
-        classroom = new Room("in a classroom on the thirdfloor");
-        roof = new Room("on the roof of the school");
+        lot = new Room("in the parking lot outside the school",roomNumber[1]);
+        auditorium = new Room("in the school auditorium",roomNumber[2]);
+        lobby = new Room("in the main lobby",roomNumber[3]);
+        cafe = new Room("in the cafeteria",roomNumber[4]);
+        office = new Room("in the principal's office",roomNumber[5]);
+        playground = new Room("outside in the fenced in playground",roomNumber[6]);
+        gym = new Room("in the gymnasium",roomNumber[7]);
+        sllobby = new Room("in the second floor lobby",roomNumber[8]);
+        library = new Room("in the library",roomNumber[9]);
+        garden = new Room("in the garden",roomNumber[10]);
+        dungeon = new Room("in the secret dungeon",roomNumber[11]);
+        bathroom = new Room("in the boys bathroom",roomNumber[12]);
+        tllobby = new Room("in the third floor lobby",roomNumber[13]);
+        classroom = new Room("in a classroom on the thirdfloor",roomNumber[14]);
+        roof = new Room("on the roof of the school",roomNumber[15]);
+        
+        dungeon = addItemsToRoom(dungeon, dungeonItems);
+        office = addItemsToRoom(office, officeItems);
+        gym = addItemsToRoom(gym, gymItems);
         
         // initialise room exits
         lot.setExit("south", lobby);
@@ -102,9 +137,27 @@ public class Game
         roof.setExit("north", tllobby);
         roof.setExit("jump", lot);
         
+        
         currentRoom = lot;  // start game outside
+        prevRoom = null;
+        
     }
-
+    private void roomNumber()
+    {
+        int[] chart;
+        chart = new int [15];
+        for (int i = 0; chart[i]; i++)
+            chart[i] = i;
+                
+    }
+    private Room addItemsToRoom(Room room, Item items[])
+    {
+        for (int i = 0; i < items.length; i++)
+        {
+            room.addItem(items[i]);
+        }  
+        return room;
+    }
     /**
      *  Main play routine.  Loops until end of play.
      */
@@ -119,10 +172,11 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+              
         }
         System.out.println("Thank you for playing.  Good bye.");
+        
     }
-
     /**
      * Print out the opening message for the player.
      */
@@ -163,6 +217,22 @@ public class Game
             case QUIT:
                 wantToQuit = quit(command);
                 break;
+                
+            case LOOK:
+                look();
+                break;
+                
+            case EAT:
+                eat();
+                break;
+                
+            case BACK:
+                back();
+                break;
+            case WIN:
+                win(currentRoom);
+                break;
+                
         }
         return wantToQuit;
     }
@@ -177,12 +247,30 @@ public class Game
     private void printHelp() 
     {
         System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("around the school grounds.");
         System.out.println();
         System.out.println("Your command words are:");
-        parser.showCommands();
+        System.out.println(parser.showCommands());
     }
-
+    private void win(Room newRoom)
+    {
+        newRoom = currentRoom;
+        if (newRoom == Room.roof) 
+            System.out.println("Thanks for playing. You win!");
+    }
+    private void look()
+    {
+        System.out.println(currentRoom.getLongDescription());
+    }
+    private void eat()
+    {
+        System.out.println("YUMMY YUMMY IN MY TUMMY!");
+    }
+    private void back()
+    {
+        currentRoom = prevRoom;
+        System.out.println(currentRoom.getLongDescription());
+    }
     /** 
      * Try to go in one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
@@ -204,6 +292,7 @@ public class Game
             System.out.println("There is no door!");
         }
         else {
+            prevRoom = currentRoom;
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
         }
