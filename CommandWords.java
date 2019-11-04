@@ -11,6 +11,9 @@ import java.util.Iterator;
  *
  * @author  Michael Kölling and David J. Barnes
  * @version 2016.02.29
+ * 
+ * @author Paul Neumaier
+ * @version 2019.11.04
  */
 
 public class CommandWords

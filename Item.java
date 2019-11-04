@@ -1,6 +1,6 @@
 
 /**
- * Write a description of class Item here.
+ * Item class allows for items to be created an given descriptions.
  *
  * @author (Paul Neumaier)
  * @version (version 11.2.19)
@@ -12,7 +12,7 @@ public class Item
     private double itemWeight;
 
     /**
-     * Constructor for objects of class Item
+     * Constructor for objects of class Item.
      */
     public Item()
     {
@@ -22,10 +22,7 @@ public class Item
     }
 
     /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
+     * Initializing item description and weight.
      */
     public Item(String description, double weight)
     {
@@ -33,6 +30,10 @@ public class Item
         itemDescription = description;
         itemWeight = weight;
     }
+    /**
+     *  Create a string of a certain item's description and return the string.
+     *  @return a string of an item's description.
+     */
     public String getItemDescription()
     {
         String itemString = "";
