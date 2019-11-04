@@ -40,6 +40,12 @@ public class Game
         parser = new Parser();
     }
 
+    public static void main(String[] args){
+        Game myGame = new Game();
+        myGame.play();
+    }
+    
+    
     /**
      * Create all the rooms and link their exits together.
      */
