@@ -1,4 +1,6 @@
 import java.lang.NullPointerException;
+import java.util.Random;
+import java.util.ArrayList;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -22,6 +24,9 @@ public class Game
     private Parser parser;
     public Room currentRoom;
     public Room prevRoom;
+    int randomRoom;
+    ArrayList<Room> array_Rooms = new ArrayList<Room>();
+   
     /**
      * Create the game and initialise its internal map.
      */
@@ -36,7 +41,8 @@ public class Game
      */
     private void createRooms()
     {
-        Room lot, auditorium, lobby, cafe, office, playground, gym, sllobby, library, garden, dungeon, bathroom, tllobby, classroom, roof;
+        Room lot, auditorium, lobby, cafe, office, playground, gym, sllobby, library, garden, dungeon, bathroom, tllobby, classroom, roof,
+        transporter;
         
         Item office_Item, dungeon_Item, gym_Item, lot_Item, no_Item;
         
@@ -50,39 +56,41 @@ public class Game
                 new Item ("Basketball", 10)};
         no_Item = new Item("", 0);
         
-        int[] roomNumber;
-        roomNumber = new int[15];
-        roomNumber[1] = 1;
-        roomNumber[2] = 2;
-        roomNumber[3] = 3;
-        roomNumber[4] = 4;
-        roomNumber[5] = 5;
-        roomNumber[6] = 6;
-        roomNumber[7] = 7;
-        roomNumber[8] = 8;
-        roomNumber[9] = 9;
-        roomNumber[10] = 10;
-        roomNumber[11] = 11;
-        roomNumber[12] = 12;
-        roomNumber[13] = 13;
-        roomNumber[14] = 14;
-        roomNumber[15] = 15;
+        
         // create the rooms
-        lot = new Room("in the parking lot outside the school",roomNumber[1]);
-        auditorium = new Room("in the school auditorium",roomNumber[2]);
-        lobby = new Room("in the main lobby",roomNumber[3]);
-        cafe = new Room("in the cafeteria",roomNumber[4]);
-        office = new Room("in the principal's office",roomNumber[5]);
-        playground = new Room("outside in the fenced in playground",roomNumber[6]);
-        gym = new Room("in the gymnasium",roomNumber[7]);
-        sllobby = new Room("in the second floor lobby",roomNumber[8]);
-        library = new Room("in the library",roomNumber[9]);
-        garden = new Room("in the garden",roomNumber[10]);
-        dungeon = new Room("in the secret dungeon",roomNumber[11]);
-        bathroom = new Room("in the boys bathroom",roomNumber[12]);
-        tllobby = new Room("in the third floor lobby",roomNumber[13]);
-        classroom = new Room("in a classroom on the thirdfloor",roomNumber[14]);
-        roof = new Room("on the roof of the school",roomNumber[15]);
+        transporter = new Room("inside of the transporter");
+        lot = new Room("in the parking lot outside the school");
+        auditorium = new Room("in the school auditorium");
+        lobby = new Room("in the main lobby");
+        cafe = new Room("in the cafeteria");
+        office = new Room("in the principal's office");
+        playground = new Room("outside in the fenced in playground");
+        gym = new Room("in the gymnasium");
+        sllobby = new Room("in the second floor lobby");
+        library = new Room("in the library");
+        garden = new Room("in the garden");
+        dungeon = new Room("in the secret dungeon");
+        bathroom = new Room("in the boys bathroom");
+        tllobby = new Room("in the third floor lobby");
+        classroom = new Room("in a classroom on the thirdfloor");
+        roof = new Room("on the roof of the school");
+        
+        array_Rooms.add(transporter);
+        array_Rooms.add(lot);
+        array_Rooms.add(auditorium);
+        array_Rooms.add(lobby);
+        array_Rooms.add(cafe);
+        array_Rooms.add(office);
+        array_Rooms.add(playground);
+        array_Rooms.add(gym);
+        array_Rooms.add(sllobby);
+        array_Rooms.add(library);
+        array_Rooms.add(garden);
+        array_Rooms.add(dungeon);
+        array_Rooms.add(bathroom);
+        array_Rooms.add(tllobby);
+        array_Rooms.add(classroom);
+        array_Rooms.add(roof);
         
         dungeon = addItemsToRoom(dungeon, dungeonItems);
         office = addItemsToRoom(office, officeItems);
@@ -117,12 +125,30 @@ public class Game
         library.setExit("west", sllobby);
         library.setExit("east", garden);
         library.setExit("secret", dungeon);
-        library.setExit("tunnel", office);
+        library.setExit("office", office);
         
         garden.setExit("west", library);
         
-        dungeon.setExit("library", library);
-        dungeon.setExit("bathroom", bathroom);
+        dungeon.setExit("North", library);
+        dungeon.setExit("South", bathroom);
+        dungeon.setExit("transporter", transporter);
+        
+        transporter.setExit("a", dungeon);
+        transporter.setExit("b", lot);
+        transporter.setExit("c", library);
+        transporter.setExit("d", auditorium);
+        transporter.setExit("e", lobby);
+        transporter.setExit("f", cafe);
+        transporter.setExit("g", office);
+        transporter.setExit("h", playground);
+        transporter.setExit("i", gym);
+        transporter.setExit("j", sllobby);
+        transporter.setExit("k", library);
+        transporter.setExit("l", garden);
+        transporter.setExit("m", bathroom);
+        transporter.setExit("n", tllobby);
+        transporter.setExit("o", classroom);
+        transporter.setExit("p", roof);
         
         bathroom.setExit("secret", dungeon);
         bathroom.setExit("west", tllobby);
@@ -137,19 +163,17 @@ public class Game
         roof.setExit("north", tllobby);
         roof.setExit("jump", lot);
         
+        randomRoom = (int) (Math.random() * array_Rooms.size());
+        transporter.setExit("special", array_Rooms.get(randomRoom));
+        array_Rooms.remove(randomRoom);
+        
         
         currentRoom = lot;  // start game outside
         prevRoom = null;
         
     }
-    private void roomNumber()
-    {
-        int[] chart;
-        chart = new int [15];
-        for (int i = 0; chart[i]; i++)
-            chart[i] = i;
-                
-    }
+   
+  
     private Room addItemsToRoom(Room room, Item items[])
     {
         for (int i = 0; i < items.length; i++)
@@ -229,10 +253,7 @@ public class Game
             case BACK:
                 back();
                 break;
-            case WIN:
-                win(currentRoom);
-                break;
-                
+         
         }
         return wantToQuit;
     }
@@ -252,12 +273,7 @@ public class Game
         System.out.println("Your command words are:");
         System.out.println(parser.showCommands());
     }
-    private void win(Room newRoom)
-    {
-        newRoom = currentRoom;
-        if (newRoom == Room.roof) 
-            System.out.println("Thanks for playing. You win!");
-    }
+    
     private void look()
     {
         System.out.println(currentRoom.getLongDescription());
@@ -287,7 +303,13 @@ public class Game
 
         // Try to leave current room.
         Room nextRoom = currentRoom.getExit(direction);
-
+        if(nextRoom.getShortDescription().contains("transporter"))
+                {
+                    System.out.println("You are currently being transported");
+                    direction = "special";
+                    nextRoom = nextRoom.getExit(direction);
+                    
+                }
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
@@ -296,6 +318,8 @@ public class Game
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
         }
+           
+            
     }
 
     /** 

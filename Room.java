@@ -22,14 +22,14 @@ public class Room
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
     private ArrayList<Item> roomItems;
-    
+    boolean i;
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description, int num) 
+    public Room(String description) 
     {
         this.description = description;
         exits = new HashMap<String, Room>();
@@ -66,13 +66,18 @@ public class Room
         return  "You are " + description + ".\n" + 
                 getItemsInRoom()+ ".\n" + getExitString();
     }
-    public String getItemsInRoom()
+       public String getItemsInRoom()
     {
-        String returnItems = "Items in the rooms are: \n";
+        String returnItems;    
+            if (roomItems!= null)
+                returnItems = "Items in the rooms are: \n";
+            else
+                returnItems = "";
         for(Item item : roomItems)
             {
                 returnItems+= item.getItemDescription() + "\n";
             }
+            
             return returnItems;
     }
     /**
