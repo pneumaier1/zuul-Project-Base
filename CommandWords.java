@@ -57,10 +57,14 @@ public class CommandWords
     {
         return validCommands.containsKey(aString);
     }
+    /**
+     * Get the full list of valid commands.
+     * @return the string of command word available.
+     */
     public String getCommandList()
     {
         String returnString =  "";
-        for (CommandWord command : CommandWord.values()){
+         for (CommandWord command : CommandWord.values()){
             returnString = returnString + command + "   ";
         }
             return returnString;

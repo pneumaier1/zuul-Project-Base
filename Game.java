@@ -17,7 +17,11 @@ import java.util.ArrayList;
  * 
  * @author  Michael Kölling and David J. Barnes
  * @version 2016.02.29
+ * 
+ * @author of modified, Paul Neumaier
+ * @version 2019.11.04
  */
+
 
 public class Game 
 {
@@ -173,7 +177,9 @@ public class Game
         
     }
    
-  
+    /**
+     *  Allows more than one item to be stored in a room.
+     */
     private Room addItemsToRoom(Room room, Item items[])
     {
         for (int i = 0; i < items.length; i++)
@@ -273,15 +279,23 @@ public class Game
         System.out.println("Your command words are:");
         System.out.println(parser.showCommands());
     }
-    
+    /**
+     * Print out the full details of the room and the items inside.
+     */
     private void look()
     {
         System.out.println(currentRoom.getLongDescription());
     }
+    /**
+     *  Print out a message when invoking the EAT command.
+     */
     private void eat()
     {
         System.out.println("YUMMY YUMMY IN MY TUMMY!");
     }
+    /**
+     * Allows use to go back to the room that they were in previously.
+     */
     private void back()
     {
         currentRoom = prevRoom;

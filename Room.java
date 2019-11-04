@@ -35,7 +35,6 @@ public class Room
         exits = new HashMap<String, Room>();
         roomItems =  new ArrayList<Item>();
     }
-
     /**
      * Define an exit from this room.
      * @param direction The direction of the exit.
@@ -66,7 +65,12 @@ public class Room
         return  "You are " + description + ".\n" + 
                 getItemsInRoom()+ ".\n" + getExitString();
     }
-       public String getItemsInRoom()
+    /**
+     * Return a list of items that are inside of the room
+     * when printing out the details of the room.
+     * @return a detailed list of items inside of this room
+     */
+    public String getItemsInRoom()
     {
         String returnItems;    
             if (roomItems!= null)
@@ -94,11 +98,14 @@ public class Room
         }
         return returnString;
     }
+    /**
+     * Adds an available item to the user.
+     */
     public void addItem(Item item)
     {
         roomItems.add(item);
     }
-    /**
+     /**
      * Return the room that is reached if we go from this room in direction
      * "direction". If there is no room in that direction, return null.
      * @param direction The exit's direction.
